@@ -1,0 +1,101 @@
+import React,{Fragment, useState,useNavigate} from 'react';
+import './Login.css'
+import axios from 'axios'
+import Register from './Register';
+
+
+const Login=()=> {
+  let Navigate=useNavigate()
+  const[enterdEmail,setEnteredEmail]=useState('')
+  const[enetrdPassword,setEnteredPassword]=useState('')
+
+  const emailChangeHandler=(event)=>{
+    setEnteredEmail(event.target.value)
+  }
+
+  const passwordChangeHandler=(event)=>{
+    setEnteredPassword(event.target.value)
+  }
+  
+  const loginUserHandler= async (event)=>{
+    
+      try{
+        event.preventDefault()
+    console.log(enterdEmail,enetrdPassword)
+        const res=await axios.post('http://localhost:5000/login',
+        JSON.stringify({ email:enterdEmail, password:enetrdPassword }),
+        {
+            headers: { 'Content-Type': 'application/json' }
+        })
+        // console.log(res)
+        if(res){
+          Navigate('/Register')
+        }
+      }catch(error){
+        console.log(error)
+      }
+  }
+//   axios.post('http://localhost:5000/login', JSON.stringify({
+//     email: enterdEmail,
+//     password: enetrdPassword
+//   }, {
+//     headers: { 'Content-Type': 'application/json' }
+// }))
+//   .then(function (response) {
+//     console.log(response);
+//   })
+//   .catch(function (error) {
+  //   console.log(error);
+  // });
+
+  // async function getUser() {
+  //   try {
+  //     // const response = await axios.post('/login')
+  //         // JSON.stringify({ enterdEmail, enetrdPassword}),
+  //         // {
+  //         //     headers: { 'Content-Type': 'application/json' },
+  //         //     withCredentials: true
+  //         // }
+  //     // );
+  //     // console.log(JSON.stringify(response?.data));
+  //     // console.log(JSON.stringify(response));
+      
+  // } catch (err) {
+  //   console.log(error)
+  // }
+  
+
+  return (
+    <Fragment>
+    <div className="container">
+    <div className="screen">
+      <div className="screen__content">
+        <form className="login" onSubmit={loginUserHandler}>
+          <div className="login__field">
+            <i className="login__icon fas fa-user"></i>
+            <input type="text" className="login__input" placeholder="User name / Email" 
+          </div>value={enterdEmail} onChange={emailChangeHandler}></input>
+          <div className="login__field">
+            <i className="login__icon fas fa-lock"></i>
+            <input type="password" className="login__input" placeholder="Password" value={enetrdPassword} onChange={passwordChangeHandler}/>
+          </div>
+          <button className="button login__submit" type='submit' >
+            <span className="button__text">Log In Now</span>
+            <i className="button__icon fas fa-chevron-right"></i>
+          </button>				
+        </form>
+        
+      </div>
+      <div className="screen__background">
+        <span className="screen__background__shape screen__background__shape4"></span>
+        <span className="screen__background__shape screen__background__shape3"></span>		
+        <span className="screen__background__shape screen__background__shape2"></span>
+        <span className="screen__background__shape screen__background__shape1"></span>
+      </div>		
+    </div>
+  </div>
+  </Fragment>
+  );
+}
+
+export default Login;
